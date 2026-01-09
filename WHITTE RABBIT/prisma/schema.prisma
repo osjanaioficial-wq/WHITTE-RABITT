@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String
+  phone         String?
+  address       String?
+  points        Int       @default(0)
+  isAdmin       Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  orders        Order[]
+  rouletteSpins RouletteSpin[]
+
+  @@map("users")
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  icon      String?
+  products  Product[]
+  createdAt DateTime  @default(now())
+
+  @@map("categories")
+}
+
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  price       Int
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  image       String?
+  active      Boolean   @default(true)
+  stock       Int       @default(999)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  orderItems  OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  total         Int
+  points        Int         @default(0)
+  discount      Int         @default(0)
+  status        String      @default("pending")
+  items         OrderItem[]
+  rouletteSpin  RouletteSpin?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Int
+
+  @@map("order_items")
+}
+
+model RouletteSpin {
+  id        String  @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderId   String  @unique
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  prize     String
+  used      Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("roulette_spins")
+}
+
+model Promotion {
+  id        String  @id @default(cuid())
+  code      String  @unique
+  discount  Int
+  active    Boolean @default(true)
+  maxUses   Int?
+  uses      Int     @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("promotions")
+}
+
+model SiteConfig {
+  id            String  @id @default("config")
+  siteName      String  @default("Whitte Rabbit Café")
+  whatsappPhone String  @default("+573144002720")
+  address       String  @default("El Nepal, Cra 6a #15-09, Chinchiná, Caldas")
+  updatedAt     DateTime @updatedAt
+
+  @@map("site_config")
+}

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+<title>WHITTE RABBIT CAFÉ</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>WHITTE RABBIT CAFÉ</h1>
+    <nav class="nav">
+      <a href="#/" class="nav-link">Inicio</a>
+      <a href="#/menu" class="nav-link">Menú</a>
+      <a href="#/carrito" class="nav-link">Carrito <span id="cart-badge" class="badge">0</span></a>
+      <a href="#/puntos" class="nav-link">Puntos</a>
+      <a href="#/perfil" class="nav-link">Perfil</a>
+    </nav>
+  </header>
+
+  <main id="app" class="container">
+    <div style="padding:20px;text-align:center;">
+      <h2>WHITTE RABBIT CAFÉ — App (Next.js)</h2>
+      <p class="muted">La aplicación principal corre con Next.js. Si ejecutaste el servidor, abre <a href="/" id="open-app">Ir a la app</a></p>
+      <p class="muted">Si no ejecutaste el servidor: en la terminal del proyecto corre <code>npm run dev</code> y luego visita <code>http://localhost:3000</code></p>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div>
+      <strong>Horarios:</strong>
+      <div>Lun–Vie 8AM–8PM · Sáb 9AM–8PM · Dom 2PM–9PM</div>
+    </div>
+    <div>
+      <strong>Dirección:</strong>
+      <div>El Nepal, Cra 6a #15-09 · Chinchiná, Caldas</div>
+    </div>
+    <div>
+      <p>Nacido en 2025 por una idea de Walter</p>
+      <p>Con apoyo de Z.AI y Oskitar</p>
+    </div>
+  </footer>
+
+<script>
+  // Si este archivo se abre directamente, intentar redirigir al root (Next.js)
+  (function(){
+    try {
+      if (location.pathname === '/' || location.pathname.endsWith('/index.html')) {
+        // intenta navegar a la app Next (si está corriendo)
+        location.href = '/';
+      }
+    } catch (e) { /* no bloquear */ }
+  })();
+</script>
+</body>
+</html>
